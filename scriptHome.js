@@ -65,16 +65,6 @@ async function updateDevice(deviceId) {
         const response = await fetch(`http://localhost:3000/sensor/${deviceId}`);
         const updatedData = await response.json();
 
-        // Salva os valores no localStorage, organizando por sensor ID
-        let sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        sensorData.push({ id: deviceId, time: new Date().toLocaleTimeString(), value: updatedData.valor });
-
-        if (sensorData.length > 50) { // Limita o histórico de valores para evitar sobrecarga
-            sensorData.shift();
-        }
-
-        localStorage.setItem("sensorData", JSON.stringify(sensorData));
-
         // Atualiza a interface de usuário na página home
         const deviceItem = document.getElementById(`device-${deviceId}`);
         if (deviceItem) {
@@ -82,47 +72,49 @@ async function updateDevice(deviceId) {
             deviceInfo.textContent = `ID: ${deviceId} | Valor: ${updatedData.valor}`;
         }
 
-        // Redireciona para graphs.html
-        //window.location.href = "graphs.html";
-
     } catch (error) {
         console.error(`Erro ao atualizar dispositivo ${deviceId}:`, error);
     }
 }
-
-
-
 
 // Função para iniciar a coleta automática de dados
 function startAutomaticDataCollection(sensors) {
     sensors.forEach(sensor => {
         setInterval(async () => {
             await updateDevice(sensor.id);
-        }, 300000); // Coleta dados a cada 5 minutos
+        }, 300000); // Coleta dados a cada x minutos
     });
 }
 
 // Função para visualizar gráficos
 document.getElementById('viewGraphs').addEventListener('click', () => {
-    window.location.href = "graphs.html"; // Redireciona para a página de gráficos
+    window.location.href = "graphs.html"; 
 });
 
 
 async function toggleDeviceStatus(deviceId) {
     try {
-        await fetch(`http://localhost:3000/sensor/toggle/${deviceId}`, { method: 'POST' });
-        await fetchAndDisplayDevices();
+        // Envia a requisição para alternar o status do atuador
+        const response = await fetch(`http://localhost:3000/sensor/toggle/${deviceId}`, { method: 'POST' });
+        const updatedData = await response.json();
+
+        if (response.ok) {
+            // Atualiza a interface de usuário diretamente após alternar o status
+            const deviceItem = document.getElementById(`device-${deviceId}`);
+            if (deviceItem) {
+                const deviceInfo = deviceItem.querySelector("span");
+                deviceInfo.textContent = `ID: ${deviceId} | Valor: ${updatedData.sensor.valor}`;
+            }
+        } else {
+            console.error('Erro ao alternar status:', updatedData.error);
+        }
+
     } catch (error) {
         console.error(`Erro ao alternar status do dispositivo ${deviceId}:`, error);
     }
 }
 
+
 window.onload = async () => {
     await fetchAndDisplayDevices();
 };
-
-
-// Simula o clique no botão "Carregar Sensores" ao carregar a página
-/*window.onload = () => {
-    document.getElementById('loadSensors').click();
-};*/
