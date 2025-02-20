@@ -1,4 +1,4 @@
-# dashboard  
+﻿# dashboard  
 ## Proposta 1: 
 ### Dashboard com ID's modularizados.  
 Padrão:  
@@ -26,7 +26,7 @@ http://localhost:3000/sensores
 Dados individuais de cada device:  
 http://localhost:3000/sensor/{deviceId}  
 
-Alterar valor do atuador:
+Alterar valor do atuador:  
 http://localhost:3000/sensor/toggle/{deviceId}  
 
 Histórico de dados dos sensores:  
