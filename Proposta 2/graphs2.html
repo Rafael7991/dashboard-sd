@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Dashboard de Sensores</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .flex-inline {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .input-date {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .chart-container {
+            width: 800px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-8">
+    <h1 class="text-3xl font-bold mb-8 text-center">Gráficos de Sensores</h1>
+    <!-- Botão Home -->
+    <button id="homeButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Home
+    </button>
+
+    <!-- Botão Resetar -->
+    <button id="resetButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        Clear
+    </button>
+
+
+
+    <div class="flex flex-col items-center space-y-4 ">
+        
+        <!-- Seletor de datas em linha -->
+        <div >
+            <label for="sensorSelect">Selecione o Sensor:</label>
+            <select id="sensorSelect" class="border p-2 rounded"></select>
+        </div>
+
+        <!-- Botão de Carregar Gráfico -->
+        <button id="loadGraph" class="bg-blue-500 text-white p-2 rounded mt-2">
+            Carregar Gráfico
+        </button>
+    </div>
+
+    <!-- Container para os gráficos -->
+    <div id="chartsContainer" class="mt-8 flex flex-wrap gap-4 justify-center"></div>
+
+    <script src="scriptGraphs2.js"></script>
+</body>
+
+</html>
